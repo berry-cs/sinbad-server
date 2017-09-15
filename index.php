@@ -172,7 +172,7 @@ date_default_timezone_set('America/New_York');
         <h2>Publications and Presentations</h2>
         
         <ul>
-          <li>ITiCSE '16 paper: "A Generic Framework for Engaging Online Data Sources in
+          <li><a href="https://doi.org/10.1145/2899415.2899437" target="_blank">ITiCSE '16 paper</a>: "A Generic Framework for Engaging Online Data Sources in
 Introductory Programming Courses" [<a href="iticse16-paper.pdf">local copy</a>] [<a href="iticse16-slides.pdf">slides</a>]</li>
 	     <li><a href="http://2015.splashcon.org/track/splash2015-splash-e#event-overview" target="_blank">SPLASH-E '15</a> workshop presentation: "A Generic Framework for Engaging Online Data Sources in Introductory Programming Courses"
           <li><a href="https://dl.acm.org/citation.cfm?id=2544280&CFID=633189652&CFTOKEN=58804699
