@@ -9,7 +9,7 @@ function get_request($param_name, $filter = FILTER_SANITIZE_STRING) {
   global $db_conn;
   
   $v = filter_input(INPUT_POST, $param_name, $filter, FILTER_FLAG_NO_ENCODE_QUOTES);
-  if (!$v) 
+  if (is_null($v) or $v === false)
     $v = filter_input(INPUT_GET, $param_name, $filter, FILTER_FLAG_NO_ENCODE_QUOTES);
     
   return $v;
