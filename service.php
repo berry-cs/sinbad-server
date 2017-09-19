@@ -10,6 +10,8 @@ $sinbad_service_handlers = array();
 
 require('service/common.php');
 require('service/install.php');
+require('service/usage.php');
+require('service/ping.php');
 
 $db_conn = connect_to_db();
   

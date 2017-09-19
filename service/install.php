@@ -14,7 +14,7 @@ parameters:
 
 
 function handle_install() {
-  global $sinbad_setup, $db_conn;
+  global $db_conn;
   
   list($version, $os, $lang, $first_use_ts) 
     = array_map( get_request, array('version', 'os', 'lang', 'first_use_ts') );
@@ -23,7 +23,9 @@ function handle_install() {
   $sql = "INSERT INTO installs (env, first_use_ts) VALUES ('$env_id', '$first_use_ts')";
   $db_conn->exec($sql);
     
-  die("OK");
+  header('Content-Type: application/json');
+  echo json_encode(array('type' => 'install', 'status' => 'ok'));
+  die();
 }
 
 

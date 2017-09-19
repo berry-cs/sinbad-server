@@ -6,9 +6,12 @@ require('config.php');
 
 
 function get_request($param_name, $filter = FILTER_SANITIZE_STRING) {
-  $v = filter_input(INPUT_POST, $param_name, $filter);
+  global $db_conn;
+  
+  $v = filter_input(INPUT_POST, $param_name, $filter, FILTER_FLAG_NO_ENCODE_QUOTES);
   if (!$v) 
-    $v = filter_input(INPUT_GET, $param_name, $filter);
+    $v = filter_input(INPUT_GET, $param_name, $filter, FILTER_FLAG_NO_ENCODE_QUOTES);
+    
   return $v;
 }
 
@@ -36,16 +39,16 @@ function find_or_add_env($os, $lang, $version) {
   global $db_conn;
   
   # first check if there
-  $sql = "SELECT id FROM envs WHERE os='$os' AND lang='$lang' AND version='$version'";
+  $sql = "SELECT id FROM envs WHERE hash=md5(concat('$os','$lang','$version'))";
   foreach ($db_conn->query($sql) as $row) {
-    return $row[0]; 
+    return intval($row[0]);
   }  
   
   # otherwise add a row
-  $sql = "INSERT INTO envs (os, lang, version) VALUES ('$os', '$lang', '$version')";
+  $sql = "INSERT INTO envs (os, lang, version, hash) VALUES ('$os', '$lang', '$version',md5(concat('$os','$lang','$version')))";
   $db_conn->exec($sql);
   $last_id = $db_conn->lastInsertId();
-  return $last_id;
+  return intval($last_id);
 }
 
 
