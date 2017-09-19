@@ -98,6 +98,22 @@ function find_or_add_load($env_id, $src_id, $data_options, $status) {
 }
 
 
+function find_or_add_sample($src_id, $sample_amt, $sample_seed) {
+  $sql_vals = array(':source_id' => $src_id,
+                    ':sample_amt' => $sample_amt,
+                    ':sample_seed' => $sample_seed);
+  
+  $sth = prep_and_execute("SELECT id FROM usage_samples WHERE hash=md5(concat(:source_id,:sample_amt,:sample_seed))", $sql_vals);
+  $row = $sth->fetch();
+  $sth->closeCursor();
+  
+  if ($row) { return intval($row['id']); }
+  
+  return prep_and_execute("INSERT INTO usage_samples (source_id, sample_amt, sample_seed, hash) VALUES (:source_id,:sample_amt,:sample_seed,md5(concat(:source_id,:sample_amt,:sample_seed)))", $sql_vals, true);
+}
+
+
+
 function add_timestamp($type, $foreign_id) {
   $sql_vals = array(':type' => $type,
                     ':usage_id' => $foreign_id,
@@ -106,31 +122,38 @@ function add_timestamp($type, $foreign_id) {
 }
 
 
-function handle_usage() {
-  global $db_conn;
+function handle_usage() {  
+  $success = false;
   
   list($version, $os, $lang) 
     = array_map( get_request, array('version', 'os', 'lang') );
   $env_id = find_or_add_env($os, $lang, $version);
 
-  $success = false;
+  list($usage_type,
+       $full_url, 
+       $format,      // 'csv', ... 
+       $file_entry)  // maybe empty/null string
+    = array_map(get_request, array('usage_type', 'full_url', 'format', 'file_entry'));
   
-  $usage_type = get_request('usage_type');
+  if ($usage_type)
+    $src_id = find_or_add_src($full_url, $format, $file_entry);
   
   if ($usage_type == 'load') {
-    list($full_url, 
-         $format,      // 'csv', ... 
-         $file_entry,  // maybe empty/null string
-         $status,      // 'success' / 'failure'
-         $data_options)     // data factory options (JSON object)
-      = array_map( get_request,
-                    array('full_url', 'format', 'file_entry', 'status', 'data_options') );
-      
-    if ($full_url && $format && $status) {  // these required    
-      $src_id = find_or_add_src($full_url, $format, $file_entry);
-      $load_id = find_or_add_load($env_id, $src_id, $data_options, $status);
-      $success = is_int(add_timestamp("load", $load_id));
-    }
+      list($status,      // 'success' / 'failure'
+           $data_options)     // data factory options (JSON object)
+        = array_map(get_request, array('status', 'data_options') );
+
+      if ($full_url && $format && $status) {  // these required    
+        $load_id = find_or_add_load($env_id, $src_id, $data_options, $status);
+        $success = is_int(add_timestamp("load", $load_id));
+      }
+  } elseif ($usage_type == 'sample') {
+      list($sample_amt, $sample_seed) = array_map( get_request, array('sample_amt', 'sample_seed') );
+
+      if ($full_url && $format && $sample_amt) {  // these required    
+        $sample_id = find_or_add_sample($src_id, $sample_amt, $sample_seed);
+        $success = is_int(add_timestamp("sample", $sample_id));        
+      }
   } elseif ($usage_type == 'fetch') {
     
   } 
