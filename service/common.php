@@ -5,7 +5,14 @@ $sinbad_setup = array();
 require('config.php');
 
 
-function get_request($param_name, $filter = FILTER_SANITIZE_STRING) {
+define('WELCOME_JAVA_URL', 'http://berry-cs.github.io/sinbad/welcome-java');
+define('WELCOME_PYTHON_URL', 'http://berry-cs.github.io/sinbad/welcome-python');
+
+define('FEEDBACK_REQUEST_URL', 'http://berry-cs.github.io/sinbad/feedback');
+
+
+
+function get_request($param_name, $filter = FILTER_SANITIZE_FULL_SPECIAL_CHARS) {
   global $db_conn;
   
   $v = filter_input(INPUT_POST, $param_name, $filter, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -51,6 +58,10 @@ function find_or_add_env($os, $lang, $version) {
   return intval($last_id);
 }
 
+
+function starts_with($str, $pref) {
+  return substr($str, 0, strlen($pref)) == $pref;
+}
 
 
 ?>

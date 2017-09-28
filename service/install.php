@@ -22,9 +22,17 @@ function handle_install() {
   
   $sql = "INSERT INTO installs (env, first_use_ts) VALUES ('$env_id', '$first_use_ts')";
   $db_conn->exec($sql);
+  
+  $resp = array('type' => 'install', 'status' => 'ok');
+  
+  if (starts_with($lang, 'python')) {
+    $resp['launch_url'] = WELCOME_PYTHON_URL;
+  } elseif (starts_with($lang, 'java')) {
+    $resp['launch_url'] = WELCOME_JAVA_URL;
+  }
     
   header('Content-Type: application/json');
-  echo json_encode(array('type' => 'install', 'status' => 'ok'));
+  echo json_encode($resp);
   die();
 }
 

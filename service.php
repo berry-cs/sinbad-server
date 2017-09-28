@@ -12,6 +12,7 @@ require('service/common.php');
 require('service/install.php');
 require('service/usage.php');
 require('service/ping.php');
+require('service/milestone.php');
 
 $db_conn = connect_to_db();
   
