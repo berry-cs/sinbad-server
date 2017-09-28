@@ -138,9 +138,11 @@ function add_timestamp($type, $foreign_id) {
 
 
 function handle_usage() {  
+  global $db_conn;
+  
   $success = false;
   $msg = '';
-  
+    
   list($version, $os, $lang) 
     = array_map( get_request, array('version', 'os', 'lang') );
   $env_id = find_or_add_env($os, $lang, $version);
@@ -175,7 +177,18 @@ function handle_usage() {
         = array_map(get_request, array('field_paths', 'base_path', 'select', 'got_data'));
       if ($full_url && $format && $got_data) {
         $fetch_id = find_or_add_fetch($env_id, $src_id, $field_paths, $base_path, $select, $got_data);
-        $success = is_int(add_timestamp("fetch", $fetch_id));        
+        
+        $already_there = false;
+        $sql = "SELECT id FROM usage_timestamps WHERE type='fetch' AND usage_id='$fetch_id';";
+        foreach ($db_conn->query($sql) as $row) {
+          $already_there = true;
+          $success = true;
+          break;
+        }  
+        if (!$already_there) {
+          // only add timestamp for the first occurrence of a particular fetch
+          $success = is_int(add_timestamp("fetch", $fetch_id));        
+        }
       }
   } 
   
