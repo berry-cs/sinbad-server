@@ -76,28 +76,16 @@ date_default_timezone_set('America/New_York');
       </div>
       
       <div id="getit" class="page-header">
-        <h2>Download &amp; Docs</h2>
+        <h2>Download (Java) &amp; Docs</h2>
 
-        <h3>Development version</h3>
+        <h3>Latest (development) version</h3>
         <div style="margin-left: 2em;">
 	<p><strong>(DOWNLOAD THIS)</strong></p>
-	<p><strong><a href="sinbad.jar">sinbad.jar</a></strong> <small>[Last modified: <?php print date ("F d Y g:i:sa.", filemtime("sinbad.jar"))   ?>]</small> Contains the latest features and bug-fixes. See the Github repository <a href="https://github.com/berry-cs/sinbad/commits/master" target="_blank">commit history</a> for details.
+	<p><strong><a href="sinbad.jar">sinbad.jar</a></strong> <small>[Last modified: <?php print date ("F d Y g:i:sa.", filemtime("sinbad.jar"))   ?>]</small><br /> Contains the latest features and bug-fixes. See the Github repository <a href="https://github.com/berry-cs/sinbad/commits/master" target="_blank">commit history</a> for details.
 	</p>
 
             <h4>Documentation</h4>
-            <ul>
-              <li><a href="https://github.com/berry-cs/sinbad/blob/master/docs/quick-java.md" target="_blank">Quick Reference</a></li>
-              <li>Tutorials:
-                <ul>
-                  <li><a href="https://github.com/berry-cs/sinbad/blob/master/tutorials/java/welcome01.md">Introduction</a></li>
-                  <li><a href="https://github.com/berry-cs/sinbad/blob/master/tutorials/java/welcome02-arr.md">Fetching Primitive Type Arrays</a></li>
-                  <li><a href="https://github.com/berry-cs/sinbad/blob/master/tutorials/java/welcome02-obj.md">Fetching Objects</a></li>
-                  <li>Fetching Arrays of Objects (code examples: <a href="https://github.com/berry-cs/sinbad/raw/master/tutorials/java/Welcome03.java">simple</a> and <a href="https://raw.githubusercontent.com/berry-cs/sinbad/master/tutorials/java/Welcome03Full.java">full</a>)</li>
-
-		</ul>
-	      </li>
-              <li><a href="https://github.com/berry-cs/sinbad" target="_blank">Github site</a></li>
-            </ul>          
+	    <p>Available at <strong><a href="http://berry-cs.github.io/sinbad/" target="_blank">berry-cs.github.io/sinbad/</a></strong>.
 
 	<p>Here an <a href="https://github.com/berry-cs/big-data-cse/blob/master/ideas/sources.txt" target="_blank">unorganized list of online data sources</a> to play with.
 	</div>
